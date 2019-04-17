@@ -32,6 +32,39 @@ class Result
         $this->result = $parser->parse($raw);
     }
 
+    public function hasResults()
+    {
+        return array_key_exists(Parser::PARSER_RE, $this->result);        
+    }
+
+    public function getResults()
+    {
+        if (!$this->hasResults()) {
+            throw new ClientException(sprintf('Result does not contain %s response', Parser::PARSER_RE));
+        }
+        return $this->result[Parser::PARSER_RE];
+    }
+
+    public function getResult(int $idx=0)
+    {
+        $results =  $this->getResults();
+        if (!array_key_exists($idx, $results)) {
+            throw new ClientException(sprintf('No result with index %d', $idx));
+        }
+        return $results[$idx];
+    }
+
+    public function result(string $key, int $idx=0)
+    {
+        $result = $this->getResult($idx);
+        if (!array_key_exists($key, $result)) {
+            throw new ClientException(sprintf('No property "%s" in result %d', $key, $idx));
+        }
+        return $result[$key];
+    }
+
+
+
     public function hasTrap()
     {
         return array_key_exists(Parser::PARSER_TRAP, $this->result);
