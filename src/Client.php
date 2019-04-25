@@ -212,24 +212,37 @@ class Client
     }
 
     // public function send($wordOrQuery, bool $parseResponse=true)
-    public function send(string $word, bool $parseResponse=true)
+    public function send(string $word, array $attributes = [], bool $parseResponse=true)
     {
         $query = null;
-        // if(is_string($wordOrQuery)) {
-        //     $query = new Query($wordOrQuery);
-        // }
-        // else {
-        //     $query = $wordOrQuery;
-        // }
 
         $this->connector->writeWord($word);
+        foreach($attributes as $attribute=>$value)
+        {
+            $this->connector->writeWord(sprintf('=%s=%s', $attribute, $value));
+        }
         
-        // $this->connector->writeWord($query->getCommand());
-        // foreach($query->getAttributes() as $attribute)
-        // {
-        //     $this->connector->writeWord($attribute);
-        // }
         $this->connector->writeEnd();
         return $this->connector->getSentence($parseResponse);
     }
+
+    public function query(string $word, array $queries = [], bool $parseResponse=true)
+    {
+        $query = null;
+
+        if (!preg_match('/\/print$/', $word))
+        {
+            throw new ClientException(sprintf("Queries must end with /print statement, %s received", $word));
+            
+        }
+        $this->connector->writeWord($word);
+        foreach($queries as $query)
+        {
+            $this->connector->writeWord($query);
+        }
+        
+        $this->connector->writeEnd();
+        return $this->connector->getSentence($parseResponse);
+    }
+
 }
