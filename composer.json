@@ -23,7 +23,7 @@
     "require": {
         "php": "^7.0",
         "ext-sockets": "*",
-        "symfony/options-resolver": "^4.2",
+        "symfony/options-resolver": "^4.2|^5.0",
         "mracine/php-streams": "^0.2",
         "mracine/php-binary-string": "^0.1.1"
     },
