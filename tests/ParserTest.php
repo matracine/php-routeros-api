@@ -157,6 +157,8 @@ class ParserTest extends TestCase
                 [['!re', '=key=1', '!done', '=key=value']],
                 [['!re', '=key=1', '!done', '=key=value', '=key2=value']],
                 [['!re', '=key=1', '=key2=2', '!done', '=key']],
+                [['!re', '=key=1', '=key=1', '!done', '=key']], // Duplicate key with same value => OK
+                [['!done', '=key', '=key']], // Duplicate key with same value => OK
                 [['!fatal', 'WTF ?']],
         ];
     }
@@ -178,12 +180,12 @@ class ParserTest extends TestCase
                 [['!done', 'WTF ?']],
                 [['!done', 'toto=']],
                 [['!done', '=']],
-                [['!done', '=key', '=key']],
                 [['!re', '=key=1', '!done', 'WTF ?']],
                 [['!re', '=key=1', '!done', '.tag']],
                 [['!re', '=key=1', '!done', '.pouet']],
                 [['!re', 'WTF ?', '=key2=2', '!done', '=key']],
                 [['!re', '=key=1', 'WTF ?', '!done', '=key']],
-        ];
+                [['!re', '=key=1', '=key=2', '!done', '=key']], // Duplicate key with different values => Error
+            ];
     }
 }

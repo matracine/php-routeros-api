@@ -210,9 +210,9 @@ class Parser
                     if(2 == count($t) || "" === $t[2]) {
                         $t[2] = "yes";
                     }
-                    // No duplicates attributes
-                    if (array_key_exists($t[1], $this->buffer)) {
-                        throw new ParserException(sprintf("Duplicate attribute key %s", $t[1]));
+                    // Duplicates attributes must contain the same value
+                    if (array_key_exists($t[1], $this->buffer) && ($this->buffer[$t[1]] != $t[2])) {
+                            throw new ParserException(sprintf("Duplicate attribute key %s", $t[1]));
                     }
                     $this->buffer[$t[1]] = $t[2];
                 }
