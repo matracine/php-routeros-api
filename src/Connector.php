@@ -145,7 +145,11 @@ class Connector
 
         // read WORDs from stream in loop
         // stop if we read an end of SENTENCE and in a final "block" (DONE or FATAL)
-        $word = $this->readWord();
+	$word = $this->readWord();
+        // Bug with certain versions of API ?
+	// It seems that some versions returns empty words in loop
+	// after login is sent (old versions).
+	$emptyCount = 0;
         while((!$lastBlock) || ('' !== $word)) {
             if (in_array($word, [Parser::PARSER_DONE, Parser::PARSER_FATAL])) {
                 $lastBlock = true;
@@ -153,7 +157,19 @@ class Connector
             if ($word !== '') {
                 $reply[] = $word;
             }
-            $word = $this->readWord();
+
+	    $newWord = $this->readWord();
+	    // Bug contournement
+	    // After 10 empty lines (arbitrary value) stop communication, there is a problem...
+            if (''==$word && ''==$newWord) {
+                $emptyCount++;
+                if ($emptyCount>=10) {
+                    throw new ProtocolException('Too many consecutive empty words in sentence');
+                }
+            } else {
+                $emptyCount = 0;
+            }
+            $word = $newWord;
         }
         $this->setState(self::STATE_WAITING_WRITE);
 
