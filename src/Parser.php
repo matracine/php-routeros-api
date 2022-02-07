@@ -197,18 +197,15 @@ class Parser
             case self::PARSER_RE:
             case self::PARSER_DONE:
             case self::PARSER_TRAP:
-                // format must be an attribute (=name=value)
+                // format must be an attribute ('=name=value' or '=name=')
                 if (substr($word, 0, 1) == '=' ) {
                     $t = explode('=', $word, 3);
                     if ($t[0] !== '' || $t[1] === '') {
                         throw new ParserException(sprintf("Invalid attribute %s", $word));
                     }
-                    // if (count($t) < 2) {
-                    //     throw new ParserException(sprintf("Invalid attribute %s", $word));
-                    // }
-                    // =name=, we set value to 'yes' (arbitrary)
-                    if(2 == count($t) || "" === $t[2]) {
-                        $t[2] = "yes";
+		        // =name=
+		        if(2 == count($t)) {
+                        $t[2] = "";
                     }
                     // Duplicates attributes must contain the same value
                     if (array_key_exists($t[1], $this->buffer) && ($this->buffer[$t[1]] != $t[2])) {
