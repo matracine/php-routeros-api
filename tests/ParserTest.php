@@ -158,7 +158,8 @@ class ParserTest extends TestCase
                 [['!re', '=key=1', '!done', '=key=value', '=key2=value']],
                 [['!re', '=key=1', '=key2=2', '!done', '=key']],
                 [['!re', '=key=1', '=key=1', '!done', '=key']], // Duplicate key with same value => OK
-                [['!done', '=key', '=key']], // Duplicate key with same value => OK
+                [['!re', '=key', '=key', '!done', '=key']], // Duplicate key with same value => OK
+                [['!re', '=.about=v1', '=.about=v2', '!done', '=key' ]], // Duplicate key .about with differents value => OK
                 [['!fatal', 'WTF ?']],
         ];
     }

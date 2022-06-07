@@ -203,15 +203,21 @@ class Parser
                     if ($t[0] !== '' || $t[1] === '') {
                         throw new ParserException(sprintf("Invalid attribute %s", $word));
                     }
-		        // =name=
-		        if(2 == count($t)) {
+		            // =name=
+		            if(2 == count($t)) {
                         $t[2] = "";
                     }
-                    // Duplicates attributes must contain the same value
-                    if (array_key_exists($t[1], $this->buffer) && ($this->buffer[$t[1]] != $t[2])) {
-                            throw new ParserException(sprintf("Duplicate attribute key %s", $t[1]));
+                    // .about attribute can appears multiple times
+                    if ('.about' == $t[1]) {
+                        $this->buffer['.about'][] = $t[2];
+                    } else {
+                        // Duplicates attributes must contain the same value
+                        if (array_key_exists($t[1], $this->buffer) && ($this->buffer[$t[1]] != $t[2])) {
+                                throw new ParserException(sprintf("Duplicate attribute key %s", $t[1]));
+                        }
+    
+                        $this->buffer[$t[1]] = $t[2];                        
                     }
-                    $this->buffer[$t[1]] = $t[2];
                 }
                 // Special case: .tag attribute
                 elseif (substr($word, 0, 1) == '.') {
