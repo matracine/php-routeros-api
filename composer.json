@@ -21,13 +21,13 @@
         }
     },
     "require": {
-        "php": "^7.0",
+        "php": "^7.0|^8.0",
         "ext-sockets": "*",
         "symfony/options-resolver": "^4.2|^5.0",
-        "mracine/php-streams": "^0.2",
-        "mracine/php-binary-string": "^0.1.1"
+        "mracine/php-streams": "^0.3",
+        "mracine/php-binary-string": "^0.2"
     },
     "require-dev": {
-        "phpunit/phpunit": "^6.0"
+        "phpunit/phpunit": "^8.0"
     }
 }
