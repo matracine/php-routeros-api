@@ -5,6 +5,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Constraint\IsType;
 
 use mracine\RouterOS\API\Parser;
+use mracine\RouterOS\API\Exception\ParserException;
 
 /**
  * @coversDefaultClass mracine\RouterOS\API\Parser
@@ -19,11 +20,11 @@ class ParserTest extends TestCase
     /**
      * @covers ::parse
      * @covers ::<protected>
-     * @expectedException mracine\RouterOS\API\Exception\ParserException
      */
 
     public function test_Empty()
     {
+	$this->expectException(ParserException::class);
         $data = [];
         (new Parser())->Parse($data);
     }
@@ -31,11 +32,11 @@ class ParserTest extends TestCase
     /**
      * @covers ::parse
      * @covers ::<protected>
-     * @expectedException mracine\RouterOS\API\Exception\ParserException
      */
 
     public function test_firstNotAReply()
     {
+	$this->expectException(ParserException::class);
         $data = [ 'Hello' ];
         (new Parser())->Parse($data);
     }
@@ -43,10 +44,10 @@ class ParserTest extends TestCase
     /**
      * @covers ::parse
      * @covers ::<protected>
-     * @expectedException mracine\RouterOS\API\Exception\ParserException
      */
     public function test_NotFinalRe()
     {
+	$this->expectException(ParserException::class);
         $data = [
             '!re',
         ];
@@ -56,10 +57,10 @@ class ParserTest extends TestCase
     /**
      * @covers ::parse
      * @covers ::<protected>
-     * @expectedException mracine\RouterOS\API\Exception\ParserException
      */
     public function test_NotFinalTrap()
     {
+	$this->expectException(ParserException::class);
         $data = [
             '!trap',
         ];
@@ -69,10 +70,10 @@ class ParserTest extends TestCase
     /**
      * @covers ::parse
      * @covers ::<protected>
-     * @expectedException mracine\RouterOS\API\Exception\ParserException
      */
     public function test_VerifyFinal()
     {
+	$this->expectException(ParserException::class);
         $data = [
             '!fatal',
             '!done'
@@ -113,10 +114,10 @@ class ParserTest extends TestCase
      * @covers ::parse
      * @covers ::<protected>
      * @dataProvider BlocksOrderKOProvider
-     * @expectedException mracine\RouterOS\API\Exception\ParserException
      */
     public function test_BlocksOrderKO(array $dialog)
     {
+	$this->expectException(ParserException::class);
         (new Parser())->Parse($dialog);
     }
 
@@ -168,10 +169,10 @@ class ParserTest extends TestCase
      * @covers ::parse
      * @covers ::<protected>
      * @dataProvider KOAttributesProvider
-     * @expectedException mracine\RouterOS\API\Exception\ParserException
      */
     public function test_KOAttributes(array $dialog)
     {
+	$this->expectException(ParserException::class);
         $r = (new Parser())->Parse($dialog);
     }
 

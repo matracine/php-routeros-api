@@ -15,11 +15,11 @@ class WorLengthCoDecTest extends TestCase
 {
     /**
      * @dataProvider encodeLengthNegativeProvider
-     * @expectedException \DomainException
      * @covers ::encodeLength
      */
     public function test__encodeLengthNegative($length)
     {
+	$this->expectException(\DomainException::class);
         WordLengthCoDec::encodeLength($length);
     }
 
@@ -33,11 +33,11 @@ class WorLengthCoDecTest extends TestCase
 
     /**
      * @dataProvider encodeLengthTooLargeProvider
-     * @expectedException \DomainException
      * @covers ::encodeLength
      */
     public function test__encodeLengthTooLarge($length)
     {
+	$this->expectException(\DomainException::class);
         WordLengthCoDec::encodeLength($length);
     }
 
@@ -99,10 +99,10 @@ class WorLengthCoDecTest extends TestCase
     /**
      * @dataProvider decodeLengthControlWordProvider
      * @covers ::decodeLength
-     * @expectedException UnexpectedValueException
      */
     public function test_decodeLengthControlWord(string $encodedLength)
     {
+	$this->expectException(\UnexpectedValueException::class);
         WordLengthCoDec::decodeLength(new BufferStream($encodedLength));
     }
 
